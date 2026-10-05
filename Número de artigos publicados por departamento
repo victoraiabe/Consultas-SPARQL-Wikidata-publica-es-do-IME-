@@ -1,0 +1,27 @@
+#defaultView:BarChart
+SELECT ?categoria ?categoriaLabel
+       (COUNT(DISTINCT ?artigo) AS ?totalArtigos)
+WHERE {
+
+  SERVICE <https://query-scholarly.wikidata.org/sparql> {
+
+    ?artigo wdt:P5008 wd:Q97013571 ;
+             wdt:P50 ?autor .
+  }
+
+  # Departamento do autor
+  ?autor wdt:P1416 ?categoria .
+
+  VALUES ?categoria {
+    wd:Q107150637
+    wd:Q107154401
+    wd:Q107151201
+    wd:Q107153596
+  }
+
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language "pt,en".
+  }
+}
+GROUP BY ?categoria ?categoriaLabel
+ORDER BY DESC(?totalArtigos)
