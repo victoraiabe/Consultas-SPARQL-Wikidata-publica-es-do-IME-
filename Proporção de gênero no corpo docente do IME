@@ -1,0 +1,21 @@
+SELECT ?generoLabel
+       (COUNT(DISTINCT ?pessoa) AS ?quantidade)
+WHERE {
+
+  ?pessoa
+    wdt:P108 wd:Q10302895 ;
+    wdt:P21 ?genero .
+
+  VALUES ?genero {
+    wd:Q6581097
+    wd:Q6581072
+  }
+
+  SERVICE wikibase:label {
+    bd:serviceParam
+      wikibase:language "pt,en".
+  }
+
+}
+GROUP BY ?generoLabel
+ORDER BY DESC(?quantidade)
