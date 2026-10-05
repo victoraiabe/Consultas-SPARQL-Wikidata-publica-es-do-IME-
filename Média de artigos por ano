@@ -1,0 +1,28 @@
+SELECT
+  ?totalArtigos
+  ?totalAnos
+  (?totalArtigos / ?totalAnos AS ?mediaPorAno)
+WHERE {
+
+  {
+    SELECT (COUNT(DISTINCT ?item) AS ?totalArtigos)
+    WHERE {
+      SERVICE <https://query-scholarly.wikidata.org/sparql> {
+        ?item wdt:P31 wd:Q13442814 ;
+              wdt:P195 wd:Q136708214 .
+      }
+    }
+  }
+
+  {
+    SELECT (COUNT(DISTINCT ?ano) AS ?totalAnos)
+    WHERE {
+      SERVICE <https://query-scholarly.wikidata.org/sparql> {
+        ?item wdt:P195 wd:Q136708214 ;
+              wdt:P577 ?date .
+      }
+
+      BIND(YEAR(?date) AS ?ano)
+    }
+  }
+}
