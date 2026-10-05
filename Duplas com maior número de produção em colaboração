@@ -1,0 +1,32 @@
+#defaultView:Table
+
+SELECT
+  ?autor1Label
+  ?autor2Label
+  (COUNT(DISTINCT ?artigo) AS ?totalCoautorias)
+WHERE {
+
+  SERVICE <https://query-scholarly.wikidata.org/sparql> {
+
+    ?artigo wdt:P195 wd:Q136708214 ;
+             wdt:P50 ?autor1 ,
+                     ?autor2 .
+
+    # Evita autor com ele mesmo
+    FILTER(?autor1 != ?autor2)
+
+    # Evita duplicidade A-B / B-A
+    FILTER(STR(?autor1) < STR(?autor2))
+  }
+
+  ?autor1 wdt:P108 wd:Q10302895 .
+  ?autor2 wdt:P108 wd:Q10302895 .
+
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language "pt,en".
+  }
+}
+GROUP BY
+  ?autor1Label
+  ?autor2Label
+ORDER BY DESC(?totalCoautorias)
