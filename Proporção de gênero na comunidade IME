@@ -1,0 +1,12 @@
+#defaultView:BarChart
+SELECT ?generoLabel (COUNT(DISTINCT ?pessoa) AS ?quantidade)
+WHERE {
+  ?pessoa wdt:P1416|wdt:69|wdt:P108 wd:Q10302895 ;  # afiliação, alma mater ou empregador: IME-USP
+           wdt:P21 ?genero .       # sexo ou gênero
+
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language "pt,en".
+  }
+}
+GROUP BY ?generoLabel
+ORDER BY DESC(?quantidade)
