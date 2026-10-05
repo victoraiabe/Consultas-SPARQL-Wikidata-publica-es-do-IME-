@@ -1,0 +1,24 @@
+#defaultView:BarChart
+SELECT ?categoria ?categoriaLabel 
+       (COUNT(DISTINCT ?pessoa) AS ?total)
+WHERE {
+
+  ?pessoa wdt:P5008 wd:Q97013571 ;
+           wdt:P108 wd:Q835960 ;
+           wdt:P1416 ?categoria .
+
+  VALUES ?categoria {
+    wd:Q107150637
+    wd:Q107154401
+    wd:Q107151201
+    wd:Q107153596
+  }
+
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language "pt,en".
+  }
+
+}
+
+GROUP BY ?categoria ?categoriaLabel
+ORDER BY DESC(?total)
