@@ -1,0 +1,21 @@
+#defaultView:Map
+SELECT ?affiliation ?affiliationLabel ?country ?countryLabel ?coords WITH {
+  SELECT DISTINCT ?researcher WHERE {
+    { ?item wdt:P108 wd:Q10302895; wdt:P50 ?researcher. }
+    UNION
+    { SERVICE wdsubgraph:scholarly_articles { ?item wdt:P361 wd:Q18477654; wdt:P50 ?researcher. } }
+  }
+} AS %researchers
+WITH {
+  SELECT DISTINCT ?researcher ?affiliation WHERE {
+    INCLUDE %researchers.
+    ?researcher wdt:P1416|wdt:P108|wdt:P185|wdt:P69 ?affiliation.
+  }
+} AS %affiliation
+WHERE {
+  INCLUDE %affiliation.
+  { ?affiliation wdt:P625 ?coords. }
+  UNION
+  { FILTER NOT EXISTS { ?affiliation wdt:P625 []. } ?affiliation wdt:P17|wdt:P27 ?country. ?country wdt:P625 ?coords. }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],pt-br,pt,en,es,fr,de,ja". }
+}
