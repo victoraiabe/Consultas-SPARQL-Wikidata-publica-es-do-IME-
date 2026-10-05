@@ -1,0 +1,8 @@
+SELECT (COUNT(DISTINCT ?revista) AS ?totalRevistas)
+WHERE {
+  # Acesso ao repositório principal do Wikidata
+  SERVICE <https://query-scholarly.wikidata.org/sparql> {
+    ?artigo wdt:P195 wd:Q136708214 .
+    ?artigo wdt:P1433 ?revista .
+  }
+}
