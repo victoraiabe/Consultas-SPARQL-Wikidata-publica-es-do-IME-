@@ -1,0 +1,18 @@
+#defaultView:BarChart
+SELECT ?formacao ?formacaoLabel 
+       (COUNT(DISTINCT ?pessoa) AS ?total)
+WHERE {
+
+  ?pessoa wdt:P5008 wd:Q97013571 ;
+           wdt:P108 wd:Q835960 ;
+           wdt:P69 ?formacao .
+
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language "pt,en".
+  }
+
+}
+
+GROUP BY ?formacao ?formacaoLabel
+ORDER BY DESC(?total)
+LIMIT 10
