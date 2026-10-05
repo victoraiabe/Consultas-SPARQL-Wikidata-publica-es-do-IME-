@@ -1,0 +1,8 @@
+SELECT
+  (REPLACE(STR(COUNT(?item)), "(\\d)(?=(\\d{3})+$)", "$1.") AS ?total)
+WHERE {
+  SERVICE <https://query-scholarly.wikidata.org/sparql> {
+    ?item wdt:P31 wd:Q13442814;  # artigo científico
+          wdt:P195 wd:Q136708214. # coleção IME-USP
+  }
+}
