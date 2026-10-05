@@ -1,0 +1,15 @@
+SELECT ?idioma ?idiomaLabel (COUNT(DISTINCT ?artigo) AS ?totalArtigos)
+WHERE {
+
+  SERVICE <https://query-scholarly.wikidata.org/sparql> {
+    ?artigo wdt:P195 wd:Q136708214 ;
+             wdt:P407 ?idioma .
+  }
+
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language "pt,en".
+  }
+}
+GROUP BY ?idioma ?idiomaLabel
+ORDER BY DESC(?totalArtigos)
+LIMIT 25
