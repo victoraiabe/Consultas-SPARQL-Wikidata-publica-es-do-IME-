@@ -1,0 +1,21 @@
+#defaultView:BubbleChart
+SELECT ?country ?countryLabel (COUNT(DISTINCT ?coauthor) AS ?num_coauthors)
+WITH {
+  SELECT ?coauthor WHERE {
+    SERVICE wdsubgraph:scholarly_articles {
+      [] wdt:P195 wd:Q136708214; wdt:P50 ?imeAuthor, ?coauthor.
+    }
+    
+    ?imeAuthor wdt:P108 wd:Q10302895.
+    FILTER(?imeAuthor != ?coauthor)
+  }
+} AS %coauthors
+WHERE {
+  INCLUDE %coauthors.
+  ?coauthor wdt:P108 [wdt:P17 ?country].
+  FILTER(?country != wd:Q155)   # opcional: exclui Brasil
+
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "pt,en".}
+}
+GROUP BY ?country ?countryLabel
+ORDER BY DESC(?num_coauthors)
