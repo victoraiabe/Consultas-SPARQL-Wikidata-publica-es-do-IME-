@@ -1,0 +1,17 @@
+SELECT (SUM(?paginas) AS ?TotalPaginasGeral) ?legenda
+WHERE {
+  {
+    # Subconsulta para evitar contagem duplicada de páginas por item
+    SELECT ?item (MAX(?p) AS ?paginas)
+    WHERE {
+      SERVICE <https://query-scholarly.wikidata.org/sparql> {
+        ?item wdt:P195 wd:Q136708214 ; # Coleção do IME-USP
+              wdt:P1104 ?p .           # Número de páginas
+      }
+    }
+    GROUP BY ?item
+  }
+  
+  BIND("Total IME-USP" AS ?legenda)
+}
+GROUP BY ?legenda
