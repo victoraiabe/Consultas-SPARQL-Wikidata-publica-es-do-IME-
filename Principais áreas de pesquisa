@@ -1,0 +1,15 @@
+#defaultView:BarChart
+SELECT (SAMPLE(?temaLabel) AS ?tema) (COUNT(DISTINCT ?artigo) AS ?total)
+WHERE {
+  SERVICE <https://query-scholarly.wikidata.org/sparql> {
+    ?artigo wdt:P195 wd:Q136708214 ;
+             wdt:P921 ?temaItem .
+  }
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language "pt,en".
+    ?temaItem rdfs:label ?temaLabel .
+  }
+}
+GROUP BY ?temaItem
+ORDER BY DESC(?total)
+LIMIT 10
