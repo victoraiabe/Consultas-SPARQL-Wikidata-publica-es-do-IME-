@@ -1,0 +1,12 @@
+#defaultView:BarChart
+SELECT ?anos (COUNT(DISTINCT ?item) AS ?Produção) ?legenda
+WHERE {
+  SERVICE <https://query-scholarly.wikidata.org/sparql> {
+    ?item wdt:P195 wd:Q136708214 ;
+          wdt:P577 ?date .
+  }
+  BIND(STR(YEAR(?date)) AS ?anos)
+  BIND("IME-USP" AS ?legenda)
+}
+GROUP BY ?anos ?legenda
+ORDER BY ?anos
