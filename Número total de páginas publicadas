@@ -1,7 +1,6 @@
 SELECT (SUM(?paginas) AS ?TotalPaginasGeral) ?legenda
 WHERE {
   {
-    # Subconsulta para evitar contagem duplicada de páginas por item
     SELECT ?item (MAX(?p) AS ?paginas)
     WHERE {
       SERVICE <https://query-scholarly.wikidata.org/sparql> {
