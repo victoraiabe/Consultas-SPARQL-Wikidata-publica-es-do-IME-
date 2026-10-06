@@ -1,5 +1,4 @@
 #defaultView:BarChart
-#Quais autores do IME mais publicam (e trabalham no IME)?
 SELECT ?professor ?professorLabel (COUNT(DISTINCT ?artigo) AS ?totalArtigos)
 WHERE {
 
@@ -8,7 +7,6 @@ WHERE {
              wdt:P50 ?professor .
   }
 
-  # Garante que o autor é/foi empregado no IME-USP
   ?professor wdt:P108 wd:Q10302895 .
   ?professor wdt:P21  wd:Q6581072  .
 
